@@ -13,7 +13,7 @@ class Board
 
 
   def initialize
-    @grid = Array.new(8) {Array.new(8)}
+    @grid = Array.new(8) {Array.new(8, NullPiece.instance) }
     fill_board
   end
 
@@ -43,6 +43,7 @@ class Board
   def valid_pos?(pos)
     pos.all? { |coord| coord >= 0 && coord <= 7 }
   end
+  
   private
 
   def []=(pos, value)

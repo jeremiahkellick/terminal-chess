@@ -1,6 +1,7 @@
-require 'colorize'
+require 'singleton'
+
 class Piece
-  attr_accessor :pos
+  attr_accessor :pos, :color
 
   def initialize(pos, board, color)
     @pos = pos
@@ -11,10 +12,20 @@ class Piece
   def to_s
     "#"
   end
+
+  def moves
+    raise NotImplmentedError
+  end
 end
 
-class NilClass
+class NullPiece
+  include Singleton
+
+  def color
+    :null_color
+  end
+
   def to_s
-    "#"
+    " "
   end
 end
