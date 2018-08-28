@@ -13,14 +13,14 @@ class Display
     black = false
     (8 * 3).times do |i|
       black = !black if i % 3 == 0
-      (6 * 8).times do |j|
+      (8 * 6).times do |j|
         pos = [i / 3, j / 6]
         piece = @board[pos]
         black = !black if j % 6 == 0
         bg = black ? :black : :light_black
         bg = :red if pos == @cursor.cursor_pos
         if (i - 1) % 3 == 0 && (j - 2) % 6 == 0
-          print piece.to_s.colorize(color: :blue, background: bg)
+          print piece.to_s.colorize(color: :cyan, background: bg)
         else
           print " ".colorize(background: bg)
         end
