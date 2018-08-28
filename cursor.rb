@@ -1,5 +1,5 @@
 require "io/console"
-
+require_relative "add_pos"
 KEYMAP = {
   " " => :space,
   "h" => :left,
@@ -87,10 +87,6 @@ class Cursor
     #return a cursor_pos
     #update_pos
     #exit from terminal
-  end
-
-  def add_pos(pos1, pos2)
-    [pos1[0] + pos2[0], pos1[1] + pos2[1]]
   end
 
   def update_pos(diff)
