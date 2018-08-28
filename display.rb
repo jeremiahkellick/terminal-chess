@@ -20,7 +20,8 @@ class Display
         bg = black ? :black : :light_black
         bg = :red if pos == @cursor.cursor_pos
         if (i - 1) % 3 == 0 && (j - 2) % 6 == 0
-          print piece.to_s.colorize(color: :cyan, background: bg)
+          color = piece.color == :white ? :white : :cyan
+          print piece.to_s.colorize(color: color, background: bg)
         else
           print " ".colorize(background: bg)
         end
