@@ -23,7 +23,7 @@ class Piece
 
   def valid_moves
     moves.reject do |move|
-      @board.move_piece(@pos, move)
+      @board.move_piece(@pos, move, false)
       in_check = @board.in_check?(@color)
       @board.undo
       in_check

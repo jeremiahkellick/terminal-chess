@@ -46,10 +46,12 @@ class Board
     @grid[pos[0]][pos[1]]
   end
 
-  def move_piece(start_pos, end_pos)
+  def move_piece(start_pos, end_pos, check_validity = true)
     piece = self[start_pos]
     raise ArgumentError, "there is no piece at start_pos" if piece.nil?
-    raise InvalidMoveError unless move_valid?(start_pos, end_pos)
+    if check_validity
+      raise InvalidMoveError unless move_valid?(start_pos, end_pos)
+    end
     self[start_pos] = NullPiece.instance
     @last_move = [start_pos, end_pos]
     @destroyed_piece = self[end_pos]
@@ -58,7 +60,9 @@ class Board
   end
 
   def move_valid?(start_pos, end_pos)
-    [start_pos, end_pos].all? { |pos| valid_pos?(pos) }
+    valid_pos?(start_pos) &&
+    !self[start_pos].null? &&
+    self[start_pos].valid_moves.include?(end_pos)
   end
 
   def valid_pos?(pos)

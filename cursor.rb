@@ -81,6 +81,7 @@ class Cursor
       return @cursor_pos
     when :left, :up, :down, :right
       update_pos(MOVES[key])
+      :updated_position
     when :ctrl_c
       Process.exit(0)
     end

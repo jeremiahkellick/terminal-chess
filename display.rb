@@ -3,9 +3,13 @@ require_relative "cursor"
 require_relative "board"
 
 class Display
+  attr_reader :cursor
+  attr_accessor :highlighted
+
   def initialize(board)
     @board = board
     @cursor = Cursor.new([0, 0], board)
+    @highlighted = []
   end
 
   def render
@@ -18,6 +22,7 @@ class Display
         piece = @board[pos]
         black = !black if j % 6 == 0
         bg = black ? :black : :light_black
+        bg = :blue if @highlighted.include?(pos)
         bg = :red if pos == @cursor.cursor_pos
         if (i - 1) % 3 == 0 && (j - 2) % 6 == 0
           color = piece.color == :white ? :white : :cyan
@@ -29,17 +34,4 @@ class Display
       print " \n".colorize(background: :default)
     end
   end
-
-  def loop
-    while true
-      render
-      @cursor.get_input
-    end
-  end
-end
-
-if __FILE__ == $PROGRAM_NAME
-  board = Board.new
-  display = Display.new(board)
-  display.loop
 end
