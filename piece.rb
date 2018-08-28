@@ -15,6 +15,6 @@ end
 
 class NilClass
   def to_s
-    "#".light_black
+    "#"
   end
 end
