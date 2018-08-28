@@ -23,6 +23,10 @@ class King < Piece
   def move_diffs
     [[1,0], [0,-1], [-1,0], [0,1], [1,-1], [-1,-1], [-1,1], [1,1]]
   end
+
+  def to_s
+    "K"
+  end
 end
 
 class Knight < Piece
@@ -30,5 +34,9 @@ class Knight < Piece
 
   def move_diffs
     [[2,-1],[1,-2],[-1,-2],[-2,-1],[-2,1],[-1,2],[1,2],[2,1]]
+  end
+
+  def to_s
+    "N"
   end
 end

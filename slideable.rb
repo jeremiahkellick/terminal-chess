@@ -45,6 +45,10 @@ class Rook < Piece
   def horizontal?
     true
   end
+
+  def to_s
+    "R"
+  end
 end
 
 class Bishop < Piece
@@ -52,6 +56,10 @@ class Bishop < Piece
 
   def diagonal?
     true
+  end
+
+  def to_s
+    "B"
   end
 end
 
@@ -64,5 +72,9 @@ class Queen < Piece
 
   def diagonal?
     true
+  end
+
+  def to_s
+    "Q"
   end
 end

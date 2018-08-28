@@ -30,4 +30,8 @@ class Pawn < Piece
   def straight_diff
     [@vertical, 0]
   end
+
+  def to_s
+    "P"
+  end
 end
