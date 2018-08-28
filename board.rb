@@ -97,6 +97,12 @@ class Board
     @destroyed_piece.pos = @last_move[1]
   end
 
+  def valid_piece_to_move?(pos, color)
+    !self[pos].null? &&
+    !self[pos].valid_moves.empty? &&
+    self[pos].color == color
+  end
+
   private
 
   def []=(pos, value)

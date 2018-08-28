@@ -12,12 +12,8 @@ class HumanPlayer < Player
     until selected_pos
       @display.render
       input = @display.cursor.get_input
-      if input.is_a?(Array) &&
-         !board[input].null? &&
-         !board[input].valid_moves.empty? &&
-         board[input].color == @color
-
-        selected_pos = input
+      if input.is_a?(Array)
+        selected_pos = input if board.valid_piece_to_move?(input, @color)
       end
     end
     @display.highlighted = board[selected_pos].valid_moves if @assist_mode
