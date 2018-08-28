@@ -14,7 +14,7 @@ class Piece
   end
 
   def moves
-    raise NotImplmentedError
+    raise NotImplementedError
   end
 end
 
