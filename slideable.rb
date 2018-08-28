@@ -32,7 +32,7 @@ module Slideable
       on_board = @board.valid_pos?(current_pos)
       if on_board && @board[current_pos].color != color
         result << current_pos
-        blocked = false if @board[current_pos].is_a?(NullPiece)
+        blocked = false if @board[current_pos].null?
       end
     end
     result
