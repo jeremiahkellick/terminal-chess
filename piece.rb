@@ -16,6 +16,10 @@ class Piece
   def moves
     raise NotImplementedError
   end
+
+  def null?
+    false
+  end
 end
 
 class NullPiece
@@ -27,5 +31,9 @@ class NullPiece
 
   def to_s
     " "
+  end
+
+  def null?
+    true
   end
 end
