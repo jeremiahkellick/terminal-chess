@@ -3,10 +3,19 @@ require_relative "display"
 require_relative "player"
 
 class Game
-  def initialize
+  def initialize(pvp = true)
     @board = Board.new
     @display = Display.new(@board)
-    @players = [:white, :black].map { |color| HumanPlayer.new(color, @display) }
+    if pvp
+      @players = [:white, :black].map do |color|
+        HumanPlayer.new(color, @display)
+      end
+    else
+      @players = [
+        HumanPlayer.new(:white, @display),
+        ComputerPlayer.new(:black, @display)
+      ]
+    end
   end
 
   def switch_players!
@@ -26,6 +35,25 @@ class Game
   end
 end
 
+class InvalidInputError < StandardError
+end
+
 if __FILE__ == $PROGRAM_NAME
-  Game.new.play
+  pvp = true
+  begin
+    puts "Would you like to play against a (h)uman or (c)omputer?"
+    response = gets.chomp
+    case response
+    when "h"
+      pvp = true
+    when "c"
+      pvp = false
+    else
+      raise InvalidInputError
+    end
+  rescue InvalidInputError
+    puts "Invalid input"
+    retry
+  end
+  Game.new(pvp).play
 end

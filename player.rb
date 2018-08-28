@@ -32,3 +32,19 @@ class HumanPlayer < Player
     @display.highlighted = []
   end
 end
+
+class ComputerPlayer < Player
+  def make_move(board)
+    matrix = board.pieces_for(@color).reject { |piece| piece.valid_moves.empty?}
+    current_piece = matrix.sample
+    @display.highlighted = [current_piece.pos]
+    @display.render
+    sleep(0.5)
+    end_pos = current_piece.valid_moves.sample
+    @display.highlighted << end_pos
+    @display.render
+    sleep(1)
+    @display.highlighted = []
+    board.move_piece(current_piece.pos, end_pos)
+  end
+end
