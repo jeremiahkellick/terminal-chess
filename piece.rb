@@ -10,7 +10,7 @@ class Piece
   end
 
   def to_s
-    "#"
+    raise NotImplementedError
   end
 
   def moves
@@ -19,6 +19,15 @@ class Piece
 
   def null?
     false
+  end
+
+  def valid_moves
+    moves.reject do |move|
+      @board.move_piece(@pos, move)
+      in_check = @board.in_check?(@color)
+      @board.undo
+      in_check
+    end
   end
 end
 
@@ -36,4 +45,6 @@ class NullPiece
   def null?
     true
   end
+
+  def pos=(value); end
 end
