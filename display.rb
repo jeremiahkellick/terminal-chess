@@ -8,12 +8,12 @@ class Display
 
   def initialize(board)
     @board = board
-    @cursor = Cursor.new([0, 0], board)
+    @cursor = Cursor.new([6, 3], board)
     @highlighted = []
   end
 
   def render
-    system("clear")
+    string = ""
     black = false
     (8 * 3).times do |i|
       black = !black if i % 3 == 0
@@ -26,12 +26,14 @@ class Display
         bg = :red if pos == @cursor.cursor_pos
         if (i - 1) % 3 == 0 && (j - 2) % 6 == 0
           color = piece.color == :white ? :white : :cyan
-          print piece.to_s.colorize(color: color, background: bg)
+          string << piece.to_s.colorize(color: color, background: bg)
         else
-          print " ".colorize(background: bg)
+          string << " ".colorize(background: bg)
         end
       end
-      print " \n".colorize(background: :default)
+      string << " \n".colorize(background: :default)
     end
+    system("clear")
+    print string
   end
 end
