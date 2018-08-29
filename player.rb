@@ -4,28 +4,29 @@ class Player
     @display = display
     @assist_mode = true
   end
+
+  def print_turn
+    puts "#{@color.to_s.capitalize}'s turn"
+  end
 end
 
 class HumanPlayer < Player
   def make_move(board)
-    selected_pos = nil
-    until selected_pos
-      @display.render
-      input = @display.cursor.get_input
-      if input.is_a?(Array)
-        selected_pos = input if board.valid_piece_to_move?(input, @color)
-      end
-    end
+    selected_pos = get_pos { |pos| board.valid_piece_to_move?(pos, @color) }
     @display.highlighted = board[selected_pos].valid_moves if @assist_mode
     piece = board[selected_pos]
-    move_to_pos = nil
-    until move_to_pos
-      @display.render
-      input = @display.cursor.get_input
-      move_to_pos = input if input.is_a?(Array) && piece.valid_moves.include?(input)
-    end
+    move_to_pos = get_pos { |pos| piece.valid_moves.include?(pos) }
     board.move_piece(selected_pos, move_to_pos)
     @display.highlighted = []
+  end
+
+  def get_pos(&prc)
+    loop do
+      @display.render
+      print_turn
+      pos = @display.cursor.get_input
+      return pos if pos.is_a?(Array) && prc.call(pos)
+    end
   end
 end
 
@@ -33,14 +34,17 @@ class ComputerPlayer < Player
   def make_move(board)
     matrix = board.pieces_for(@color).reject { |piece| piece.valid_moves.empty?}
     current_piece = matrix.sample
-    @display.highlighted = [current_piece.pos]
-    @display.render
-    sleep(0.5)
+    display_with_new_highlight(current_piece.pos)
     end_pos = current_piece.valid_moves.sample
-    @display.highlighted << end_pos
-    @display.render
-    sleep(1)
+    display_with_new_highlight(end_pos)
     @display.highlighted = []
     board.move_piece(current_piece.pos, end_pos)
+  end
+
+  def display_with_new_highlight(pos)
+    @display.highlighted << pos
+    @display.render
+    print_turn
+    sleep(0.5)
   end
 end
