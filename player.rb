@@ -32,13 +32,22 @@ end
 
 class ComputerPlayer < Player
   def make_move(board)
-    matrix = board.pieces_for(@color).reject { |piece| piece.valid_moves.empty?}
-    current_piece = matrix.sample
-    display_with_new_highlight(current_piece.pos)
-    end_pos = current_piece.valid_moves.sample
-    display_with_new_highlight(end_pos)
+    possible_moves = []
+    possible_pieces = pieces_with_moves(board)
+    possible_pieces.each do |piece|
+      piece.valid_moves.each do |move|
+        possible_moves << [piece.pos, move] unless board[move].null?
+      end
+    end
+    if possible_moves.empty?
+      piece = possible_pieces.sample
+      possible_moves << [piece.pos, piece.valid_moves.sample]
+    end
+    move = possible_moves.sample
+    display_with_new_highlight(move[0])
+    display_with_new_highlight(move[1])
     @display.highlighted = []
-    board.move_piece(current_piece.pos, end_pos)
+    board.move_piece(move[0], move[1])
   end
 
   def display_with_new_highlight(pos)
@@ -46,5 +55,9 @@ class ComputerPlayer < Player
     @display.render
     print_turn
     sleep(0.5)
+  end
+
+  def pieces_with_moves(board)
+    board.pieces_for(@color).reject { |piece| piece.valid_moves.empty? }
   end
 end
