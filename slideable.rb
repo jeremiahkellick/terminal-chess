@@ -46,8 +46,12 @@ class Rook < Piece
     true
   end
 
-  def to_s
+  def letter
     "R"
+  end
+
+  def unicode
+    "\u2656"
   end
 end
 
@@ -58,8 +62,12 @@ class Bishop < Piece
     true
   end
 
-  def to_s
+  def letter
     "B"
+  end
+
+  def unicode
+    "\u2657"
   end
 end
 
@@ -74,7 +82,11 @@ class Queen < Piece
     true
   end
 
-  def to_s
+  def letter
     "Q"
+  end
+
+  def unicode
+    "\u2655"
   end
 end

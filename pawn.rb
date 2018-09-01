@@ -53,7 +53,11 @@ class Pawn < Piece
     end
   end
 
-  def to_s
+  def letter
     "P"
+  end
+
+  def unicode
+    "\u2659"
   end
 end

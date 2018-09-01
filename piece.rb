@@ -1,6 +1,8 @@
 require 'singleton'
 
 class Piece
+  UNICODE = true
+
   attr_accessor :pos, :color
 
   def initialize(pos, board, color)
@@ -10,6 +12,14 @@ class Piece
   end
 
   def to_s
+    Piece.unicode? ? unicode : letter
+  end
+
+  def letter
+    raise NotImplementedError
+  end
+
+  def unicode
     raise NotImplementedError
   end
 
@@ -28,6 +38,10 @@ class Piece
       @board.undo
       in_check
     end
+  end
+
+  def self.unicode?
+    UNICODE
   end
 end
 

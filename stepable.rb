@@ -24,7 +24,11 @@ class King < Piece
     [[1,0], [0,-1], [-1,0], [0,1], [1,-1], [-1,-1], [-1,1], [1,1]]
   end
 
-  def to_s
+  def unicode
+    "\u2654"
+  end
+
+  def letter
     "K"
   end
 end
@@ -36,7 +40,11 @@ class Knight < Piece
     [[2,-1],[1,-2],[-1,-2],[-2,-1],[-2,1],[-1,2],[1,2],[2,1]]
   end
 
-  def to_s
+  def unicode
+    "\u2658"
+  end
+
+  def letter
     "N"
   end
 end
