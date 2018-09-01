@@ -25,7 +25,7 @@ class King < Piece
   end
 
   def unicode
-    "\u2654"
+    "\u265A"
   end
 
   def letter
@@ -41,7 +41,7 @@ class Knight < Piece
   end
 
   def unicode
-    "\u2658"
+    "\u265E"
   end
 
   def letter

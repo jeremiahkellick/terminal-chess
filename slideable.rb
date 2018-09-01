@@ -51,7 +51,7 @@ class Rook < Piece
   end
 
   def unicode
-    "\u2656"
+    "\u265C"
   end
 end
 
@@ -67,7 +67,7 @@ class Bishop < Piece
   end
 
   def unicode
-    "\u2657"
+    "\u265D"
   end
 end
 
@@ -87,6 +87,6 @@ class Queen < Piece
   end
 
   def unicode
-    "\u2655"
+    "\u265B"
   end
 end

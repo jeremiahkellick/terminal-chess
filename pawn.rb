@@ -58,6 +58,6 @@ class Pawn < Piece
   end
 
   def unicode
-    "\u2659"
+    "\u265F"
   end
 end
