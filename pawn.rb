@@ -19,7 +19,11 @@ class Pawn < Piece
   def moves
     result = []
     straight_positions.each do |pos|
-      result << pos if @board.valid_pos?(pos) && @board[pos].null?
+      if @board.valid_pos?(pos) && @board[pos].null?
+        result << pos
+      else
+        break
+      end
     end
     diagonal_diffs.each do |diff|
       new_pos = add_pos(@pos, diff)
