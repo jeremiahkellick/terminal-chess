@@ -25,7 +25,7 @@ class Display
         bg = :blue if @highlighted.include?(pos)
         bg = :red if pos == @cursor.cursor_pos
         if (i - 1) % 3 == 0 && (j - 2) % 6 == 0
-          color = piece.color == :white ? :white : :cyan
+          color = piece.color == :white ? :white : :magenta
           string << piece.to_s.colorize(color: color, background: bg)
         else
           string << " ".colorize(background: bg)
