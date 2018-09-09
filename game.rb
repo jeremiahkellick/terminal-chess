@@ -31,6 +31,7 @@ class Game
       current_player.make_move(@board)
       switch_players!
     end
+    @display.render(false)
     puts @board.checkmate?(:white) ? "Black wins!" : "White wins!"
   end
 end

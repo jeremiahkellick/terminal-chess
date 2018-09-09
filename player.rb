@@ -26,7 +26,6 @@ class HumanPlayer < Player
   rescue EscapeError
     @display.highlighted = []
     retry
-  ensure
   end
 
   def get_pos(escapable = true, &prc)
@@ -62,7 +61,7 @@ class ComputerPlayer < Player
 
   def display_with_new_highlight(pos)
     @display.highlighted << pos
-    @display.render
+    @display.render(false)
     print_turn
     sleep(0.5)
   end
