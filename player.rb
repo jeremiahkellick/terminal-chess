@@ -10,21 +10,31 @@ class Player
   end
 end
 
+class EscapeError < StandardError
+end
+
 class HumanPlayer < Player
   def make_move(board)
-    selected_pos = get_pos { |pos| board.valid_piece_to_move?(pos, @color) }
+    selected_pos = get_pos(false) do |pos|
+      board.valid_piece_to_move?(pos, @color)
+    end
     @display.highlighted = board[selected_pos].valid_moves if @assist_mode
     piece = board[selected_pos]
     move_to_pos = get_pos { |pos| piece.valid_moves.include?(pos) }
     board.move_piece(selected_pos, move_to_pos)
     @display.highlighted = []
+  rescue EscapeError
+    @display.highlighted = []
+    retry
+  ensure
   end
 
-  def get_pos(&prc)
+  def get_pos(escapable = true, &prc)
     loop do
       @display.render
       print_turn
       pos = @display.cursor.get_input
+      raise EscapeError if escapable && pos == :escape
       return pos if pos.is_a?(Array) && prc.call(pos)
     end
   end

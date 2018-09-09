@@ -79,6 +79,8 @@ class Cursor
     case key
     when :return, :space
       return @cursor_pos
+    when :escape
+      return :escape
     when :left, :up, :down, :right
       update_pos(MOVES[key])
       :updated_position
