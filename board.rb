@@ -3,8 +3,6 @@ require_relative "slideable"
 require_relative "stepable"
 require_relative "pawn"
 
-# Board.make_board => Board.new
-
 class Board
   def initialize
     row = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
