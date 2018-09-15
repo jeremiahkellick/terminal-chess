@@ -4,6 +4,7 @@ require_relative "stepable"
 require_relative "pawn"
 
 class Board
+  # promotion_proc should return :queen, :knight, :rook, or :bishop
   def initialize(promotion_proc)
     @promotion_proc = promotion_proc
     row = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
@@ -49,11 +50,7 @@ class Board
     @moved_piece = piece
     self[end_pos] = piece
     piece.pos = end_pos
-    if check_validity && piece.promotion_due?
-      new_piece_class = Object.const_get(@promotion_proc.call)
-      new_piece = new_piece_class.new(end_pos, self, piece.color)
-      self[end_pos] = new_piece
-    end
+    promote(piece) if check_validity && piece.promotion_due?
   end
 
   def move_valid?(start_pos, end_pos)
@@ -114,6 +111,13 @@ class Board
 
   def []=(pos, value)
     @grid[pos[0]][pos[1]] = value
+  end
+
+  def promote(piece)
+    # @promotion_proc should return :queen, :knight, :rook, or :bishop
+    new_piece_class = Object.const_get(@promotion_proc.call.capitalize)
+    new_piece = new_piece_class.new(piece.pos, self, piece.color)
+    self[piece.pos] = new_piece
   end
 end
 

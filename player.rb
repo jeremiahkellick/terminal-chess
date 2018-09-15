@@ -53,7 +53,7 @@ class HumanPlayer < Player
       pause
       return get_promotion
     end
-    { "q" => :Queen, "k" => :Knight, "r" => :Rook, "b" => :Bishop }[response]
+    { "q" => :queen, "k" => :knight, "r" => :rook, "b" => :bishop }[response]
   rescue RuntimeError => e
     if e.message == "Invalid input"
       puts e.message
@@ -100,7 +100,7 @@ class ComputerPlayer < Player
   end
 
   def get_promotion
-    :Queen
+    :queen
   end
 
   def display_with_new_highlight(pos)
