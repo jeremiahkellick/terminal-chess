@@ -36,4 +36,17 @@ class Display
     system("clear")
     print string
   end
+
+  def get_pos(message = "", escapable = true, &prc)
+    loop do
+      render
+      puts message
+      pos = cursor.get_input
+      raise EscapeError if escapable && pos == :escape
+      return pos if pos.is_a?(Array) && prc.call(pos)
+    end
+  end
+end
+
+class EscapeError < StandardError
 end

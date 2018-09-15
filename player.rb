@@ -7,8 +7,8 @@ class Player
     @assist_mode = true
   end
 
-  def print_turn
-    puts "#{@color.to_s.capitalize}'s turn"
+  def turn_string
+    "#{@color.to_s.capitalize}'s turn"
   end
 
   def get_promotion
@@ -16,17 +16,16 @@ class Player
   end
 end
 
-class EscapeError < StandardError
-end
-
 class HumanPlayer < Player
   def make_move(board)
-    selected_pos = get_pos(false) do |pos|
+    selected_pos = @display.get_pos(turn_string, false) do |pos|
       board.valid_piece_to_move?(pos, @color)
     end
     @display.highlighted = board[selected_pos].valid_moves if @assist_mode
     piece = board[selected_pos]
-    move_to_pos = get_pos { |pos| piece.valid_moves.include?(pos) }
+    move_to_pos = @display.get_pos(turn_string) do |pos|
+      piece.valid_moves.include?(pos)
+    end
     board.move_piece(selected_pos, move_to_pos)
     @display.highlighted = []
   rescue EscapeError
@@ -66,16 +65,6 @@ class HumanPlayer < Player
   def pause
     puts "Press any key"
     STDIN.getch
-  end
-
-  def get_pos(escapable = true, &prc)
-    loop do
-      @display.render
-      print_turn
-      pos = @display.cursor.get_input
-      raise EscapeError if escapable && pos == :escape
-      return pos if pos.is_a?(Array) && prc.call(pos)
-    end
   end
 end
 
