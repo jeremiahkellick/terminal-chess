@@ -52,8 +52,13 @@ end
 if __FILE__ == $PROGRAM_NAME
   pvp = true
   begin
-    puts "Would you like to play against a (h)uman or (c)omputer?"
-    response = gets.chomp
+    system("clear")
+    puts <<~MESSAGE
+      Play against:
+      (h)uman
+      (c)omputer
+    MESSAGE
+    response = STDIN.getch
     case response
     when "h"
       pvp = true

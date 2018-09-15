@@ -43,7 +43,7 @@ class HumanPlayer < Player
       (b)ishop
       (v)iew board
     MESSAGE
-    response = gets.chomp
+    response = STDIN.getch
     raise RuntimeError, "Invalid input" unless %w(q k r b v).include?(response)
     if response == "v"
       system("clear")
