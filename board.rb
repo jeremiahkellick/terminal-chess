@@ -6,15 +6,6 @@ require_relative "pawn"
 # Board.make_board => Board.new
 
 class Board
-
-  # # factory method. special class method that makes new instances
-  # def self.make_board
-  #   grid
-  #
-  #   Board.new(grid)
-  # end
-
-
   def initialize
     row = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
     @kings = {}
@@ -76,9 +67,20 @@ class Board
   end
 
   def checkmate?(color)
-    in_check?(color) && pieces_for(color).all? do |piece|
-      piece.valid_moves.empty?
+    in_check?(color) && no_moves?(color)
+  end
+
+  def winner
+    checkmated = [:black, :white].find { |color| checkmate?(color) }
+    if checkmated
+      checkmated == :black ? :white : :black
+    else
+      nil
     end
+  end
+
+  def no_moves?(color)
+    pieces_for(color).all? { |piece| piece.valid_moves.empty? }
   end
 
   def pieces_for(color)

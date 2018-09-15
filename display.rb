@@ -23,9 +23,9 @@ class Display
         black = !black if j % 2 == 0
         bg = black ? :black : :light_black
         bg = :blue if @highlighted.include?(pos)
-        bg = :red if show_cursor && pos == @cursor.cursor_pos
+        bg = :magenta if show_cursor && pos == @cursor.cursor_pos
         if j % 2 == 0
-          color = piece.color == :white ? :white : :magenta
+          color = piece.color == :white ? :white : :green
           string << piece.to_s.colorize(color: color, background: bg)
         else
           string << " ".colorize(background: bg)

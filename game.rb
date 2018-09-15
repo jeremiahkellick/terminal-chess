@@ -28,11 +28,17 @@ class Game
 
   def play
     until [:white, :black].any? { |color| @board.checkmate?(color) }
+      break if @board.no_moves?(current_player.color)
       current_player.make_move(@board)
       switch_players!
     end
     @display.render(false)
-    puts @board.checkmate?(:white) ? "Black wins!" : "White wins!"
+    winner = @board.winner
+    if winner
+      puts "#{winner.capitalize} wins!"
+    else
+      puts "Stalemate"
+    end
   end
 end
 
