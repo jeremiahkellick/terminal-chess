@@ -4,7 +4,8 @@ require_relative "stepable"
 require_relative "pawn"
 
 class Board
-  def initialize
+  def initialize(promotion_proc)
+    @promotion_proc = promotion_proc
     row = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
     @kings = {}
     black_rows, white_rows = [:black, :white].map do |color|
@@ -20,7 +21,8 @@ class Board
     @grid = black_rows + middle + white_rows
     fix_piece_positions
     @last_move = nil
-    @destroyed_piece = nil
+    @destroyed_piece = NullPiece.instance
+    @moved_piece = NullPiece.instance
   end
 
   def fix_piece_positions
@@ -44,8 +46,14 @@ class Board
     self[start_pos] = NullPiece.instance
     @last_move = [start_pos, end_pos]
     @destroyed_piece = self[end_pos]
+    @moved_piece = piece
     self[end_pos] = piece
     piece.pos = end_pos
+    if check_validity && piece.promotion_due?
+      new_piece_class = Object.const_get(@promotion_proc.call)
+      new_piece = new_piece_class.new(end_pos, self, piece.color)
+      self[end_pos] = new_piece
+    end
   end
 
   def move_valid?(start_pos, end_pos)
@@ -90,9 +98,8 @@ class Board
   end
 
   def undo
-    moved_piece = self[@last_move[1]]
-    self[@last_move[0]] = moved_piece
-    moved_piece.pos = @last_move[0]
+    self[@last_move[0]] = @moved_piece
+    @moved_piece.pos = @last_move[0]
     self[@last_move[1]] = @destroyed_piece
     @destroyed_piece.pos = @last_move[1]
   end

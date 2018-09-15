@@ -4,6 +4,7 @@ class Pawn < Piece
   def initialize(pos, board, color)
     super
     @vertical = color == :white ? -1 : 1
+    @promotion_row = color == :white ? 0 : 7
     @first_time_pos_set = true
     @starting_row = nil
   end
@@ -43,6 +44,10 @@ class Pawn < Piece
 
   def straight_diff
     [@vertical, 0]
+  end
+
+  def promotion_due?
+    @pos[0] == @promotion_row
   end
 
   def straight_positions

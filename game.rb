@@ -4,7 +4,7 @@ require_relative "player"
 
 class Game
   def initialize(pvp = true)
-    @board = Board.new
+    @board = Board.new(-> { get_promotion })
     @display = Display.new(@board)
     if pvp
       @players = [:white, :black].map do |color|
@@ -16,6 +16,10 @@ class Game
         ComputerPlayer.new(:black, @display)
       ]
     end
+  end
+
+  def get_promotion
+    current_player.get_promotion
   end
 
   def switch_players!

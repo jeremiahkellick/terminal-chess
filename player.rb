@@ -10,6 +10,10 @@ class Player
   def print_turn
     puts "#{@color.to_s.capitalize}'s turn"
   end
+
+  def get_promotion
+    raise NotImplementedError
+  end
 end
 
 class EscapeError < StandardError
@@ -28,6 +32,40 @@ class HumanPlayer < Player
   rescue EscapeError
     @display.highlighted = []
     retry
+  end
+
+  def get_promotion
+    system("clear")
+    puts <<~MESSAGE
+      Choose promotion:
+      (q)ueen
+      (k)night
+      (r)ook
+      (b)ishop
+      (v)iew board
+    MESSAGE
+    response = gets.chomp
+    raise RuntimeError, "Invalid input" unless %w(q k r b v).include?(response)
+    if response == "v"
+      system("clear")
+      @display.highlighted = []
+      @display.render(false)
+      pause
+      return get_promotion
+    end
+    { "q" => :Queen, "k" => :Knight, "r" => :Rook, "b" => :Bishop }[response]
+  rescue RuntimeError => e
+    if e.message == "Invalid input"
+      puts e.message
+      retry
+    else
+      raise
+    end
+  end
+
+  def pause
+    puts "Press any key"
+    STDIN.getch
   end
 
   def get_pos(escapable = true, &prc)
@@ -59,6 +97,10 @@ class ComputerPlayer < Player
     display_with_new_highlight(move[1])
     @display.highlighted = []
     board.move_piece(move[0], move[1])
+  end
+
+  def get_promotion
+    :Queen
   end
 
   def display_with_new_highlight(pos)

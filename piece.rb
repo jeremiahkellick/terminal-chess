@@ -31,6 +31,10 @@ class Piece
     false
   end
 
+  def promotion_due?
+    false
+  end
+
   def valid_moves
     moves.reject do |move|
       @board.move_piece(@pos, move, false)
