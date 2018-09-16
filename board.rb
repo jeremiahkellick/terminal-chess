@@ -50,7 +50,24 @@ class Board
     @moved_piece = piece
     self[end_pos] = piece
     piece.pos = end_pos
-    promote(piece) if check_validity && piece.promotion_due?
+    if piece.is_a?(Pawn) && @destroyed_piece.is_a?(EnPassantPiece)
+      self[@destroyed_piece.piece_to_destroy.pos] = NullPiece.instance
+    end
+    if check_validity
+      promote(piece) if piece.promotion_due?
+      clear_en_passants
+      if piece.is_a?(Pawn) && (start_pos[0] - end_pos[0]).abs > 1
+        self[piece.behind_pos] = EnPassantPiece.new(piece.behind_pos, piece)
+      end
+    end
+  end
+
+  def clear_en_passants
+    @grid.each do |row|
+      row.each do |piece|
+        self[piece.pos] = NullPiece.instance if piece.is_a?(EnPassantPiece)
+      end
+    end
   end
 
   def move_valid?(start_pos, end_pos)
@@ -99,6 +116,10 @@ class Board
     @moved_piece.pos = @last_move[0]
     self[@last_move[1]] = @destroyed_piece
     @destroyed_piece.pos = @last_move[1]
+    if @destroyed_piece.is_a?(EnPassantPiece)
+      pos = @destroyed_piece.piece_to_destroy.pos
+      self[pos] = @destroyed_piece.piece_to_destroy
+    end
   end
 
   def valid_piece_to_move?(pos, color)

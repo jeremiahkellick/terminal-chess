@@ -17,6 +17,10 @@ class Pawn < Piece
     end
   end
 
+  def behind_pos
+    [pos[0] - @vertical, pos[1]]
+  end
+
   def moves
     result = []
     straight_positions.each do |pos|
@@ -28,11 +32,14 @@ class Pawn < Piece
     end
     diagonal_diffs.each do |diff|
       new_pos = add_pos(@pos, diff)
-      if @board.valid_pos?(new_pos) &&
-         !@board[new_pos].null? &&
-         @board[new_pos].color != @color
+      if @board.valid_pos?(new_pos)
+        piece = @board[new_pos]
+        if (!piece.null? && piece.color != @color) ||
+           (piece.is_a?(EnPassantPiece) &&
+            piece.piece_to_destroy.color != @color)
 
-        result << new_pos
+          result << new_pos
+        end
       end
     end
     result

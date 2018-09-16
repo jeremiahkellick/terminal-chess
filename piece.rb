@@ -66,3 +66,25 @@ class NullPiece
 
   def pos=(value); end
 end
+
+class EnPassantPiece
+  attr_reader :piece_to_destroy
+  attr_accessor :pos
+
+  def initialize(pos, piece_to_destroy)
+    @piece_to_destroy = piece_to_destroy
+    @pos = pos
+  end
+
+  def color
+    :null_color
+  end
+
+  def to_s
+    " "
+  end
+
+  def null?
+    true
+  end
+end
