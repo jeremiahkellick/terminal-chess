@@ -49,7 +49,7 @@ class Piece
     UNICODE
   end
 
-  private
+  protected
 
   def moved?
     @moved
