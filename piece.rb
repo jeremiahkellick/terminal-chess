@@ -9,6 +9,11 @@ class Piece
     @pos = pos
     @board = board
     @color = color
+    @moved = false
+  end
+
+  def on_move(start_pos, end_pos)
+    @moved = true
   end
 
   def to_s
@@ -31,10 +36,6 @@ class Piece
     false
   end
 
-  def promotion_due?
-    false
-  end
-
   def valid_moves
     moves.reject do |move|
       @board.move_piece(@pos, move, false)
@@ -46,6 +47,12 @@ class Piece
 
   def self.unicode?
     UNICODE
+  end
+
+  private
+
+  def moved?
+    @moved
   end
 end
 
@@ -65,6 +72,8 @@ class NullPiece
   end
 
   def pos=(value); end
+
+  def on_move(start_pos, end_pos); end
 end
 
 class EnPassantPiece
@@ -74,6 +83,7 @@ class EnPassantPiece
   def initialize(pos, piece_to_destroy)
     @piece_to_destroy = piece_to_destroy
     @pos = pos
+    @should_be_deleted = false
   end
 
   def color
@@ -86,5 +96,13 @@ class EnPassantPiece
 
   def null?
     true
+  end
+
+  def on_move(start_pos, end_pos); end
+
+  def should_be_deleted?
+    return_val = @should_be_deleted
+    @should_be_deleted = true
+    return_val
   end
 end

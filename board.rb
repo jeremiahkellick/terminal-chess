@@ -54,19 +54,8 @@ class Board
       self[@destroyed_piece.piece_to_destroy.pos] = NullPiece.instance
     end
     if check_validity
-      promote(piece) if piece.promotion_due?
+      piece.on_move(start_pos, end_pos)
       clear_en_passants
-      if piece.is_a?(Pawn) && (start_pos[0] - end_pos[0]).abs > 1
-        self[piece.behind_pos] = EnPassantPiece.new(piece.behind_pos, piece)
-      end
-    end
-  end
-
-  def clear_en_passants
-    @grid.each do |row|
-      row.each do |piece|
-        self[piece.pos] = NullPiece.instance if piece.is_a?(EnPassantPiece)
-      end
     end
   end
 
@@ -128,8 +117,6 @@ class Board
     self[pos].color == color
   end
 
-  private
-
   def []=(pos, value)
     @grid[pos[0]][pos[1]] = value
   end
@@ -139,6 +126,18 @@ class Board
     new_piece_class = Object.const_get(@promotion_proc.call.capitalize)
     new_piece = new_piece_class.new(piece.pos, self, piece.color)
     self[piece.pos] = new_piece
+  end
+
+  private
+
+  def clear_en_passants
+    @grid.each_with_index do |row, row_i|
+      row.each_with_index do |piece, col_i|
+        if piece.is_a?(EnPassantPiece) && piece.should_be_deleted?
+          self[piece.pos] = NullPiece.instance
+        end
+      end
+    end
   end
 end
 
