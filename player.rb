@@ -95,7 +95,7 @@ class ComputerPlayer < Player
   def display_with_new_highlight(pos)
     @display.highlighted << pos
     @display.render(false)
-    print_turn
+    puts turn_string
     sleep(0.5)
   end
 
