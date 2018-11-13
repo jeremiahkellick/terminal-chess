@@ -1,4 +1,12 @@
 # Terminal Chess
 
-To install dependencies run `bundle install`  
+Chess played in the terminal and written in Ruby
+
+## Gameplay
+
+![Gameplay](gameplay.gif)
+
+## Installation
+
+To install dependencies run `bundle install`
 To play run `ruby game.rb`
